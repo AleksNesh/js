@@ -5,65 +5,11 @@ window.onload = function () {
 	var isElementsCreated = false;
 	var month = document.getElementById('month');
 	var day = document.getElementById('day');
-
-	monthDay = [
-		{
-			name: "January",
-			maxDays: 31
-		},
-		{
-			name: "Fabruary",
-			maxDays: 28
-		},
-		{
-			name: "March",
-			maxDays: 31
-		},
-		{
-			name: "April",
-			maxDays: 30
-		},
-		{
-			name: "May",
-			maxDays: 31
-		},
-		{
-			name: "June",
-			maxDays: 30
-		},
-		{
-			name: "July",
-			maxDays: 31
-		},
-		{
-			name: "August",
-			maxDays: 31
-		},
-		{
-			name: "September",
-			maxDays: 30
-		},
-		{
-			name: "Oktober",
-			maxDays: 31
-		},
-		{
-			name: "November",
-			maxDays: 30
-		},
-		{
-			name: "December",
-			maxDays: 31
-		}
-	];
-
-
+	var year = 2015;
 
 	generate.onclick = function () {
-
-	
-	month.innerHTML = "";
-	day.innerHTML = "";
+		month.innerHTML = "";
+		day.innerHTML = "";
 	
 				var arr, max_number, i, unic, evenArr;
 				arr = [];
@@ -83,11 +29,6 @@ window.onload = function () {
 				  arr.push(a);
 				}
 				document.getElementById('generateArray').innerHTML = arr.join("&nbsp");
-				console.log(arr.join(";"));
-
-
-				
-
 
 				calculate.onclick = function () {
 				
@@ -134,8 +75,6 @@ window.onload = function () {
 						roundArr.push(calcArr[i]);
 					}
 				}
-				console.log(calcArr);
-				console.log(roundArr);
 				document.getElementById('string4').innerHTML = roundArr.join("&nbsp");
 
 
@@ -155,22 +94,15 @@ window.onload = function () {
 					span.className = 'numbers';
 					span.innerHTML = arr[i];
 					document.getElementById('numbeerDate').appendChild(span);
-					// document.body.appendChild(span);
 				}
 		};
-		
-
 	};
-
-
 	document.addEventListener('click', function(e){
 
 		var t = e.target;
 		var className = "numbers";
 		var number = t.innerHTML;
 		var clear = 'clear';
-		
-
 		if ( t.className == className) {
 
 			if (month.innerHTML == '') {
@@ -188,39 +120,50 @@ window.onload = function () {
 		else if ( t.className == clear) {
 			month.innerHTML = "";
 			day.innerHTML = "";
+			document.getElementById('formatD').innerHTML = "";
+	      document.getElementById('formatM').innerHTML = "";
 		}
 	});
 	
 	document.getElementById('date').onclick = function(){
 		var m = month.innerHTML - 1;
 		var d = day.innerHTML;
-		document.getElementById('formatM').innerHTML = monthDay[m].name;
+    	var i = new Date(year, m, d) ;
+    	var fullDateName = i.toDateString();
+    	var monthName = i.toDateString().substr(4,3);
+   
+	    if ( i.getMonth() == m ) {
+	      document.getElementById('formatD').innerHTML = d;
+	      document.getElementById('formatM').innerHTML = monthName;
+	    }
+	    else {
+	      alert('incorrect date');
 
-		if (d > monthDay[m].maxDays) {
-			alert('incorrect date')
-			document.getElementById('FormatD').innerHTML = monthDay[m].maxDays;
-		}
-		else {
-			document.getElementById('FormatD').innerHTML = d;
-		}
-	};
+	    	for (var j = 1;;) {      
+	       	var newD = d - j;
+	        i = new Date(year, m, newD);
+		       if ( i.getMonth() == m ) {
+		       	var fullDateName = i.toDateString();
+		    	var monthName = i.toDateString().substr(4,3);
+		        document.getElementById('formatD').innerHTML = newD;
+		        document.getElementById('formatM').innerHTML = monthName;
+		        break;
+		       	}
+		       else { j++ }
+		     }
+    	}
+    }
 	
-
 	var input = document.getElementById('input');
 	var g = /^(\d|10)$/ ;
 	document.getElementById('input').onkeyup = function() {
 		var inputValue = input.value;
 		
-		console.log(g.test(inputValue));
 		if (g.test(inputValue)) {
-
 		}
 		else{
 			alert('only 0-10');
 			input.value = '';
 		}
 	};
-	
-
-
 }
